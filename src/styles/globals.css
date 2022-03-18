@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#__next {
+	@apply h-full;
+}
+
+@layer utilities {
+	.marker-red {
+		cursor: grab;
+	}
+	.marker-blue {
+		filter: hue-rotate(220deg);
+	}
+	.marker-green {
+		filter: hue-rotate(120deg);
+	}
+}
