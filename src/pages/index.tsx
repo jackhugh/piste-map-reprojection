@@ -8,13 +8,7 @@ const ResortMap = dynamic(() => import('~/maps/ResortMap'), { ssr: false });
 export const gpsCenter: LatLngLiteral = { lat: 36.70324067728794, lng: 137.83572769799568 };
 export const mapSize: LatLngTuple = [2122, 3000];
 export const mapCenter: LatLngLiteral = { lat: mapSize[0] / 2, lng: mapSize[1] / 2 };
-export const mapUrl = 'https://www.skiresort.info/typo3temp/assets/_processed_/6f/f8/88/80/9d11c18931.jpg';
-
-// export const gpsCenter: LatLngLiteral = { lat: -39.24035770453973, lng: 175.5595055818314 };
-// export const mapSize: LatLngTuple = [3178, 4500];
-// export const mapCenter: LatLngLiteral = { lat: mapSize[0] / 2, lng: mapSize[1] / 2 };
-// export const mapUrl =
-// 	'https://media.skigebiete-test.de/images/ecu/entity/e_skiresort/ski-resort_whakapapa-mt-ruapehu_n5012-155976-1_raw.jpg';
+export const mapUrl = 'happo.jpg';
 
 export default function Index() {
 	useMarkerBlur();
