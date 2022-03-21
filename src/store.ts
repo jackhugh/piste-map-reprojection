@@ -1,12 +1,15 @@
+import * as turf from '@turf/turf';
+import produce from 'immer';
+import { WritableDraft } from 'immer/dist/internal';
+import { LatLngLiteral } from 'leaflet';
+import { v4 as uuid } from 'uuid';
 import create, { GetState, PartialState, SetState, State, StateCreator, StateSelector, StoreApi } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { v4 as uuid } from 'uuid';
-import produce from 'immer';
-import { LatLngLiteral } from 'leaflet';
-import * as turf from '@turf/turf';
-import { WritableDraft } from 'immer/dist/internal';
-import { calculateGpsTin, calculateMapTin } from './estimation/tin';
 import { calculateBounds } from './estimation/bounds';
+import { calculateGpsTin, calculateMapTin } from './estimation/tin';
+import exampleStateStore from './exampleState.json';
+
+const exampleState = exampleStateStore.state;
 
 export type SavedPoint = {
 	resortPos: LatLngLiteral;
@@ -107,20 +110,65 @@ export type StoreType = {
 };
 
 export const useStore = createWithMiddleware<StoreType>((set, get, api, compute) => ({
-	savedPoints: [],
-	activePoint: null,
-	estimatePos: { lat: 0, lng: 0 },
+	// savedPoints: [],
+	// activePoint: null,
+	// estimatePos: { lat: 0, lng: 0 },
+	// gpsData: {
+	// 	currentCenter: { lat: 0, lng: 0 },
+	// 	tin: compute(
+	// 		turf.tin(turf.featureCollection([])),
+	// 		(state) => {
+	// 			state.gpsData.tin = calculateGpsTin(state.savedPoints);
+	// 		},
+	// 		(state) => state.savedPoints
+	// 	),
+	// 	bounds: compute(
+	// 		null,
+	// 		(state) => {
+	// 			state.gpsData.bounds = calculateBounds(state.savedPoints.map((point) => point.gpsPos));
+	// 		},
+	// 		(state) => state.savedPoints
+	// 	),
+	// },
+	// resortData: {
+	// 	currentCenter: { lat: 0, lng: 0 },
+	// 	tin: compute(
+	// 		turf.tin(turf.featureCollection([])),
+	// 		(state) => {
+	// 			state.resortData.tin = calculateMapTin(state.gpsData.tin);
+	// 		},
+	// 		(state) => state.gpsData.tin
+	// 	),
+	// 	bounds: compute(
+	// 		null,
+	// 		(state) => {
+	// 			state.resortData.bounds = calculateBounds(state.savedPoints.map((point) => point.resortPos));
+	// 		},
+	// 		(state) => state.savedPoints
+	// 	),
+	// },
+	// sidebarToggles: {
+	// 	showAllPoints: true,
+	// 	showBounds: false,
+	// 	showTin: false,
+	// 	showEstimatePos: false,
+	// },
+
+	// Example data for demo purposes
+	savedPoints: exampleState.savedPoints,
+	activePoint: exampleState.activePoint,
+	estimatePos: exampleState.estimatePos,
 	gpsData: {
-		currentCenter: { lat: 0, lng: 0 },
+		currentCenter: exampleState.gpsData.currentCenter,
 		tin: compute(
-			turf.tin(turf.featureCollection([])),
+			exampleState.gpsData.tin as MapData['tin'],
 			(state) => {
 				state.gpsData.tin = calculateGpsTin(state.savedPoints);
 			},
 			(state) => state.savedPoints
 		),
 		bounds: compute(
-			null,
+			exampleState.gpsData.bounds as MapData['bounds'],
 			(state) => {
 				state.gpsData.bounds = calculateBounds(state.savedPoints.map((point) => point.gpsPos));
 			},
@@ -128,28 +176,23 @@ export const useStore = createWithMiddleware<StoreType>((set, get, api, compute)
 		),
 	},
 	resortData: {
-		currentCenter: { lat: 0, lng: 0 },
+		currentCenter: exampleState.resortData.currentCenter,
 		tin: compute(
-			turf.tin(turf.featureCollection([])),
+			exampleState.resortData.tin as MapData['tin'],
 			(state) => {
 				state.resortData.tin = calculateMapTin(state.gpsData.tin);
 			},
 			(state) => state.gpsData.tin
 		),
 		bounds: compute(
-			null,
+			exampleState.resortData.bounds as MapData['bounds'],
 			(state) => {
 				state.resortData.bounds = calculateBounds(state.savedPoints.map((point) => point.resortPos));
 			},
 			(state) => state.savedPoints
 		),
 	},
-	sidebarToggles: {
-		showAllPoints: true,
-		showBounds: false,
-		showTin: false,
-		showEstimatePos: false,
-	},
+	sidebarToggles: exampleState.sidebarToggles,
 	addPoint: () =>
 		set((state) => {
 			const newPoint: SavedPoint = {
@@ -201,7 +244,7 @@ export const useStore = createWithMiddleware<StoreType>((set, get, api, compute)
 	},
 }));
 
-useStore.subscribe(
-	(state) => console.log(state),
-	(state) => state
-);
+// useStore.subscribe(
+// 	(state) => console.log(state),
+// 	(state) => state
+// );

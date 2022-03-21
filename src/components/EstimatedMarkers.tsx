@@ -1,8 +1,8 @@
-import { useStore } from '~/store';
-import { icon, Marker } from './Markers';
 import { LeafletEventHandlerFn, LeafletMouseEvent } from 'leaflet';
 import { useMemo } from 'react';
 import { estimateMapPosition } from '~/estimation/estimate';
+import { useStore } from '~/store';
+import { icon, Marker } from './Markers';
 
 export function EstimateMarker() {
 	const estimatePos = useStore((state) => state.estimatePos);
